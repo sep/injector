@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net46;net47</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+
+    <Version>1.0.0</Version>
+    <FileVersion>$(Version)</FileVersion>
+    <Authors>Jon Fuller</Authors>
+    <Description>Injects values into config files directly or via environment variables. Can inject either connection strings or WCF client endpoints.</Description>
+    <Copyright>Copyright © 2018 SEP, Inc</Copyright>
+    <Title>Injects values into config files directly or via environment variables. Making 12 factor simple, even with .NET config files. (Useful with Docker)</Title>
+    <PackageId>Injector</PackageId>
+    <PackageVersion>$(Version)</PackageVersion>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>config appconfig inject environment env envvar 12factor twelvefactor docker db database connection-string connectionstring wcf endpoint</PackageTags>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/sep/injector/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/sep/injector</PackageProjectUrl>
+    <PackageOutputPath>artifacts</PackageOutputPath>
+  </PropertyGroup>
+    
+</Project>

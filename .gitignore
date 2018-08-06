@@ -1,0 +1,11 @@
+.env
+
+packages
+tools
+artifacts
+
+bin
+obj
+
+.vs
+*.user
