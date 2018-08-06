@@ -7,12 +7,7 @@ Console app for injecting values or the value of environment variables into .NET
 Can be used to inject...
 
 * Database connection strings
-
-    whatever
-
 * WCF Client Endpoint addresses
-
-    whatever
 
 ## Usage
 
