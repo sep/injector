@@ -17,10 +17,10 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
 
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <FileVersion>$(Version)</FileVersion>
     <Authors>Jon Fuller</Authors>
-    <Description>Injects values into config files directly or via environment variables. Can inject either connection strings or WCF client endpoints.</Description>
+    <Description>Injects values into config files directly or via environment variables. Can inject app settings, connection strings, or WCF client endpoints.</Description>
     <Copyright>Copyright © 2018 SEP, Inc</Copyright>
     <Title>Injects values into config files directly or via environment variables. Making 12 factor simple, even with .NET config files. (Useful with Docker)</Title>
     <PackageId>Injector</PackageId>
