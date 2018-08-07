@@ -20,14 +20,24 @@ namespace Injector
                 ? GetEnvVar(opts.Value)
                 : opts.Value;
 
-            if (opts.IsConnectionString)
+            if (opts.IsAppSetting)
+                InjectAppSetting(opts.ConfigFile, opts.Name, value);
+            else if (opts.IsConnectionString)
                 InjectConnectionString(opts.ConfigFile, opts.Name, value);
-            else if(opts.IsWcfEndpoint)
+            else if (opts.IsWcfEndpoint)
                 InjectWcfEndpoint(opts.ConfigFile, opts.Name, value);
         }
 
         private static void HandleParseError(IEnumerable<Error> errs)
         {
+        }
+
+        private static void InjectAppSetting(string configFile, string settingKey, string endpoint)
+        {
+            InjectValue(
+                configFile,
+                $"//configuration/appSettings/add[@key = '{settingKey}']/@value",
+                endpoint);
         }
 
         private static void InjectWcfEndpoint(string configFile, string endpointName, string endpoint)
@@ -72,10 +82,13 @@ namespace Injector
     }
     class Options
     {
-        [Option('c', "connection_string", HelpText = "Whether or not this is a connection string replacement.")]
+        [Option('a', "app_setting", HelpText = "Whether or not this is an app setting injection.")]
+        public bool IsAppSetting { get; set; }
+
+        [Option('c', "connection_string", HelpText = "Whether or not this is a connection string injection.")]
         public bool IsConnectionString { get; set; }
 
-        [Option('w', "wcf_client_endpoint", HelpText = "Whether or not this is a WCF client endpoint replacement.")]
+        [Option('w', "wcf_client_endpoint", HelpText = "Whether or not this is a WCF client endpoint injection.")]
         public bool IsWcfEndpoint{ get; set; }
 
         [Option('e', "environment_value", HelpText = "Whether or not VALUE is an environment variable. If it is, the value will be pulled from the environment named by VALUE.")]
@@ -84,7 +97,7 @@ namespace Injector
         [Value(0, MetaName = "config file path", Required = true, HelpText = "config file path")]
         public string ConfigFile { get; set; }
 
-        [Value(1, MetaName = "connection string name", Required = true, HelpText = "name of element to inject (either connection string name or WCF client endpoint name)")]
+        [Value(1, MetaName = "connection string name", Required = true, HelpText = "name of element to inject (app setting key, connection string name, or WCF client endpoint name)")]
         public string Name { get; set; }
 
         [Value(2, MetaName = "value", Required = true, HelpText = "the value to be injected OR name of environment variable to use when injecting (combined with -e option)")]
