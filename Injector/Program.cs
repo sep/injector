@@ -64,7 +64,8 @@ namespace Injector
             var node = xml.SelectSingleNode(xpath);
             if (node == null)
             {
-                throw new InvalidOperationException($"Cannot find {xpath}.");
+                Console.Error.WriteLine($"Cannot find {xpath}.");
+                return;
             }
 
             node.Value = value;
