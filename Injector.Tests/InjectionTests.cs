@@ -7,7 +7,7 @@ namespace Injector.Tests
     public class InjectionTests
     {
         [Fact]
-        public void InjectsAppSettKey()
+        public void InjectsAppSetting()
         {
             var original = @"
 <?xml version=""1.0"" encoding=""utf-8""?>
@@ -29,6 +29,31 @@ namespace Injector.Tests
 
             TestInjection(original, expected,
                 injection => injection.InjectAppSetting("TestKey", "new value"));
+        }
+
+        [Fact]
+        public void InjectsConnectionString()
+        {
+            var original = @"
+<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+  <connectionStrings>
+    <add name=""DatabaseConnection"" connectionString=""original connection string"" />
+  </connectionStrings>
+</configuration>
+";
+
+            var expected = @"
+<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+  <connectionStrings>
+    <add name=""DatabaseConnection"" connectionString=""new connection string"" />
+  </connectionStrings>
+</configuration>
+";
+
+            TestInjection(original, expected,
+                injection => injection.InjectConnectionString("DatabaseConnection", "new connection string"));
         }
 
         private void TestInjection(string originalContent, string expectedContent, Action<Injection> exercise)
