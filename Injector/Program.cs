@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Linq;
 using CommandLine;
 
 namespace Injector
@@ -20,60 +20,19 @@ namespace Injector
                 ? GetEnvVar(opts.Value)
                 : opts.Value;
 
+            var injection = new Injection(opts.ConfigFile);
+
             if (opts.IsAppSetting)
-                InjectAppSetting(opts.ConfigFile, opts.Name, value);
+                injection.InjectAppSetting(opts.Name, value);
             else if (opts.IsConnectionString)
-                InjectConnectionString(opts.ConfigFile, opts.Name, value);
-            else if (opts.IsWcfEndpoint)
-                InjectWcfEndpoint(opts.ConfigFile, opts.Name, value);
+                injection.InjectConnectionString(opts.Name, value);
+            else if (opts.IsWcfEndpoint) injection.InjectWcfEndpoint(opts.Name, value);
         }
 
         private static void HandleParseError(IEnumerable<Error> errs)
         {
         }
 
-        private static void InjectAppSetting(string configFile, string settingKey, string endpoint)
-        {
-            InjectValue(
-                configFile,
-                $"//configuration/appSettings/add[@key = '{settingKey}']/@value",
-                endpoint);
-        }
-
-        private static void InjectWcfEndpoint(string configFile, string endpointName, string endpoint)
-        {
-            InjectValue(
-                configFile,
-                $"//configuration/system.serviceModel/client/endpoint[@name = '{endpointName}']/@address",
-                endpoint);
-        }
-
-        private static void InjectConnectionString(string configFile, string connectionStringName, string connectionString)
-        {
-            InjectValue(
-                configFile,
-                $"//configuration/connectionStrings/add[@name = '{connectionStringName}']/@connectionString",
-                connectionString);
-        }
-
-        private static void InjectValue(string filename, string xpath, string value)
-        {
-            var xml = new XmlDocument();
-            xml.Load(filename);
-
-            var node = xml.SelectSingleNode(xpath);
-            if (node == null)
-            {
-                Console.Error.WriteLine($"Cannot find {xpath}.");
-                return;
-            }
-
-            node.Value = value;
-
-            xml.Save(filename);
-
-            Console.Out.WriteLine($"Injected {value} into {filename} at {xpath}.");
-        }
         private static string GetEnvVar(string variableName)
         {
             return Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Process)
@@ -81,6 +40,7 @@ namespace Injector
                 ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
         }
     }
+
     class Options
     {
         [Option('a', "app_setting", HelpText = "Whether or not this is an app setting injection.")]
