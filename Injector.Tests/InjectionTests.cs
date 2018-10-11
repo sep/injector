@@ -56,6 +56,36 @@ namespace Injector.Tests
                 injection => injection.InjectConnectionString("DatabaseConnection", "new connection string"));
         }
 
+        [Fact]
+        public void InjectsWcfEndpoint()
+        {
+            var original = @"
+<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+  <system.serviceModel>
+    <client>
+      <endpoint name=""ServiceName"" address=""original endpoint address"" />
+    </client>
+  </system.serviceModel>
+</configuration>
+";
+
+            var expected = @"
+<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+  <system.serviceModel>
+    <client>
+      <endpoint name=""ServiceName"" address=""new endpoint address"" />
+    </client>
+  </system.serviceModel>
+</configuration>
+";
+
+            TestInjection(original, expected,
+                injection => injection.InjectWcfEndpoint("ServiceName", "new endpoint address"));
+        }
+
+
         private void TestInjection(string originalContent, string expectedContent, Action<Injection> exercise)
         {
             using (WithFile(filename =>
