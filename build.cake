@@ -36,6 +36,10 @@ Task("rebuild")
     .IsDependentOn("clean")
     .IsDependentOn("build");
 
+Task("test")
+    .Description("Runs tests")
+    .Does(() => DotNetCoreTest("./Injector.Tests/Injector.Tests.csproj"));
+
 Task("restore-nuget")
     .Description("Restores NuGet packages")
     .Does(() => NuGetRestore(solution));
