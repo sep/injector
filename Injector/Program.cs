@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using CommandLine;
 
 namespace Injector
@@ -10,38 +8,16 @@ namespace Injector
         static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(Run)
+                .WithParsed(Runner.Run)
                 .WithNotParsed(HandleParseError);
-        }
-
-        private static void Run(Options opts)
-        {
-            var value = opts.IsValueEnvironmentVariable
-                ? GetEnvVar(opts.Value)
-                : opts.Value;
-
-            var injection = new Injection(opts.ConfigFile);
-
-            if (opts.IsAppSetting)
-                injection.InjectAppSetting(opts.Name, value);
-            else if (opts.IsConnectionString)
-                injection.InjectConnectionString(opts.Name, value);
-            else if (opts.IsWcfEndpoint) injection.InjectWcfEndpoint(opts.Name, value);
         }
 
         private static void HandleParseError(IEnumerable<Error> errs)
         {
         }
-
-        private static string GetEnvVar(string variableName)
-        {
-            return Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Process)
-                ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
-                ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
-        }
     }
 
-    class Options
+    public class Options
     {
         [Option('a', "app_setting", HelpText = "Whether or not this is an app setting injection.")]
         public bool IsAppSetting { get; set; }
