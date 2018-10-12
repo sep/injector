@@ -1,6 +1,5 @@
-using System;
-using System.IO;
 using Xunit;
+using static Injector.Tests.TestHelper;
 
 namespace Injector.Tests
 {
@@ -83,39 +82,6 @@ namespace Injector.Tests
 
             TestInjection(original, expected,
                 injection => injection.InjectWcfEndpoint("ServiceName", "new endpoint address"));
-        }
-
-
-        private void TestInjection(string originalContent, string expectedContent, Action<Injection> exercise)
-        {
-            using (WithFile(filename =>
-            {
-                var actualContent = WithContent(filename, originalContent.Trim(), () =>
-                {
-                    var injection = new Injection(filename);
-
-                    exercise(injection);
-                });
-
-
-                Assert.Equal(expectedContent.Trim(), actualContent.Trim());
-            }));
-        }
-
-        private IDisposable WithFile(Action<string> doTest)
-        {
-            var filename = Path.GetTempFileName();
-            doTest(filename);
-            return Disposing.Disposable.Create(() => File.Delete(filename));
-        }
-
-        private string WithContent(string filename, string content, Action test)
-        {
-            File.WriteAllText(filename, content);
-
-            test();
-
-            return File.ReadAllText(filename);
         }
     }
 }
