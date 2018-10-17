@@ -73,5 +73,41 @@ namespace Injector.Tests
                 });
             }
         }
+
+        [Fact]
+        public void LoadsEnvFileIfSpecified()
+        {
+            var original = @"
+<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+  <appSettings>
+    <add key=""TestKey"" value=""original value"" />
+  </appSettings>
+</configuration>
+";
+
+            var expected = @"
+<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+  <appSettings>
+    <add key=""TestKey"" value=""environment value from file"" />
+  </appSettings>
+</configuration>
+";
+
+            using (WithFile2(".env"))
+            {
+                File.WriteAllText(".env", "INJECTOR_ENV_TEST=environment value from file");
+                TestRunner(original, expected, new Options
+                {
+                    EnvFile = ".env",
+                    ConfigFile = Path.GetTempFileName(),
+                    IsAppSetting = true,
+                    IsValueEnvironmentVariable = true,
+                    Name = "TestKey",
+                    Value = "INJECTOR_ENV_TEST"
+                });
+            }
+        }
     }
 }

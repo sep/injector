@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;net47;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
+    <PackageReference Include="dotenv.net" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>

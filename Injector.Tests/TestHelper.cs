@@ -55,6 +55,10 @@ namespace Injector.Tests
             doTest();
             return Disposable.Create(() => File.Delete(filename));
         }
+        public static IDisposable WithFile2(string filename)
+        {
+            return Disposable.Create(() => File.Delete(filename));
+        }
 
         public static string WithContent(string filename, string content, Action test)
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using dotenv.net;
 
 namespace Injector
 {
@@ -6,6 +8,9 @@ namespace Injector
     {
         public static void Run(Options opts)
         {
+            if (opts.EnvFileSpecified)
+                LoadEnv(opts);
+
             var value = opts.IsValueEnvironmentVariable
                 ? GetEnvVar(opts.Value)
                 : opts.Value;
@@ -17,6 +22,21 @@ namespace Injector
             else if (opts.IsConnectionString)
                 injection.InjectConnectionString(opts.Name, value);
             else if (opts.IsWcfEndpoint) injection.InjectWcfEndpoint(opts.Name, value);
+        }
+
+        private static void LoadEnv(Options opts)
+        {
+            if (!File.Exists(opts.EnvFile))
+            {
+                Console.Error.WriteLine($"Environment file '{opts.EnvFile}' does not exist.");
+            }
+            else
+            {
+                Console.WriteLine($"Loaded Environment file '{opts.EnvFile}'.");
+                DotEnv.Config(
+                    throwOnError: false,
+                    filePath: opts.EnvFile);
+            }
         }
 
         private static string GetEnvVar(string variableName)
