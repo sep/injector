@@ -31,6 +31,9 @@ namespace Injector
         [Option('e', "environment_value", HelpText = "Whether or not VALUE is an environment variable. If it is, the value will be pulled from the environment named by VALUE.")]
         public bool IsValueEnvironmentVariable { get; set; }
 
+        [Option(longName: "envFile", Required = false, HelpText = "Path to a \".env\" file (or other filename).")]
+        public string EnvFile { get; set; }
+
         [Value(0, MetaName = "config file path", Required = true, HelpText = "config file path")]
         public string ConfigFile { get; set; }
 
@@ -39,5 +42,7 @@ namespace Injector
 
         [Value(2, MetaName = "value", Required = true, HelpText = "the value to be injected OR name of environment variable to use when injecting (combined with -e option)")]
         public string Value { get; set; }
+
+        public bool EnvFileSpecified => EnvFile != null;
     }
 }

@@ -9,7 +9,9 @@ namespace Injector.Tests
     {
         public static void TestInjection(string originalContent, string expectedContent, Action<Injection> exercise)
         {
-            using (WithTempFile(filename =>
+            var filename = Path.GetTempFileName();
+
+            using (WithFile(filename))
             {
                 var actualContent = WithContent(filename, originalContent.Trim(), () =>
                 {
@@ -20,12 +22,12 @@ namespace Injector.Tests
 
 
                 Assert.Equal(expectedContent.Trim(), actualContent.Trim());
-            })) ;
+            }
         }
 
         public static void TestRunner(string originalContent, string expectedContent, Options opts)
         {
-            using (WithFile(opts.ConfigFile, () =>
+            using (WithFile(opts.ConfigFile))
             {
                 var actualContent = WithContent(opts.ConfigFile, originalContent.Trim(), () =>
                 {
@@ -33,7 +35,7 @@ namespace Injector.Tests
                 });
 
                 Assert.Equal(expectedContent.Trim(), actualContent.Trim());
-            })) ;
+            }
         }
 
         public static IDisposable WithEnvVar(string variableName, string value)
@@ -43,20 +45,12 @@ namespace Injector.Tests
             return Disposable.Create(() => Environment.SetEnvironmentVariable(variableName, currentValue));
         }
 
-        public static IDisposable WithTempFile(Action<string> doTest)
+        public static IDisposable WithFile(string filename)
         {
-            var filename = Path.GetTempFileName();
-            doTest(filename);
             return Disposable.Create(() => File.Delete(filename));
         }
 
-        public static IDisposable WithFile(string filename, Action doTest)
-        {
-            doTest();
-            return Disposable.Create(() => File.Delete(filename));
-        }
-
-        public static string WithContent(string filename, string content, Action test)
+        private static string WithContent(string filename, string content, Action test)
         {
             File.WriteAllText(filename, content);
 
