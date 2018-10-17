@@ -95,7 +95,7 @@ namespace Injector.Tests
 </configuration>
 ";
 
-            using (WithFile2(".env"))
+            using (WithFile(".env"))
             {
                 File.WriteAllText(".env", "INJECTOR_ENV_TEST=environment value from file");
                 TestRunner(original, expected, new Options
