@@ -104,3 +104,9 @@ This updates the service client enpoint with name `MasterEndpoint` in the follow
 
 PM> Install-Package Injector 
 Or visit: https://www.nuget.org/packages/Injector/
+
+---
+
+[![Powered by SEP logo](https://raw.githubusercontent.com/sep/assets/master/images/powered-by-sep.svg?sanitize=true)](https://www.sep.com)
+
+Injector is supported by SEP: a Software Product Design + Development company. If you'd like to [join our team](https://www.sep.com/careers/open-positions/), don't hesitate to get in touch!
