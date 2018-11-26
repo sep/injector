@@ -20,7 +20,6 @@ namespace Injector.Tests
                     exercise(injection);
                 });
 
-
                 Assert.Equal(expectedContent.Trim(), actualContent.Trim());
             }
         }
@@ -50,7 +49,7 @@ namespace Injector.Tests
             return Disposable.Create(() => File.Delete(filename));
         }
 
-        private static string WithContent(string filename, string content, Action test)
+        public static string WithContent(string filename, string content, Action test)
         {
             File.WriteAllText(filename, content);
 

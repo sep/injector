@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using dotenv.net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Injector
 {
@@ -11,8 +13,8 @@ namespace Injector
             if (opts.EnvFileSpecified)
                 LoadEnv(opts);
 
-            var value = opts.IsValueEnvironmentVariable
-                ? GetEnvVar(opts.Value)
+            var value = opts.IsValueEnvironmentVariable ? GetEnvVar(opts.Value)
+                : opts.IsJsonPath ? GetJsonValue(opts.Value, opts.JsonFile)
                 : opts.Value;
 
             var injection = new Injection(opts.ConfigFile);
@@ -44,6 +46,13 @@ namespace Injector
             return Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Process)
                    ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User)
                    ?? Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
+        }
+
+        private static string GetJsonValue(string jsonPath, string jsonFile)
+        {
+            var data = JObject.Parse(File.ReadAllText(jsonFile));
+            var token = data.SelectToken(jsonPath);
+            return token.ToString();
         }
     }
 }

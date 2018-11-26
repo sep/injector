@@ -31,8 +31,15 @@ namespace Injector
         [Option('e', "environment_value", HelpText = "Whether or not VALUE is an environment variable. If it is, the value will be pulled from the environment named by VALUE.")]
         public bool IsValueEnvironmentVariable { get; set; }
 
+        [Option('j', "json_path", HelpText = "Whether or not VALUE is a json path (https://www.newtonsoft.com/json/help/html/QueryJsonSelectTokenJsonPath.htm). If it is, the value will be the result of querying the JSON file specified by 'json_path'.")]
+        public bool IsJsonPath { get; set; }
+
         [Option(longName: "envFile", Required = false, HelpText = "Path to a \".env\" file (or other filename).")]
         public string EnvFile { get; set; }
+
+
+        [Option(longName: "json_file", Required = false, HelpText = "Path to a JSON file for use in conjunction with '-j' or '--json_path'.")]
+        public string JsonFile { get; set; }
 
         [Value(0, MetaName = "config file path", Required = true, HelpText = "config file path")]
         public string ConfigFile { get; set; }
