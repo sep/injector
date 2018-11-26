@@ -1,15 +1,22 @@
 ﻿using System;
 using System.IO;
+using CSharpx;
 using dotenv.net;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Injector
 {
     public static class Runner
     {
-        public static void Run(Options opts)
+        public static Maybe<ExitCode> Run(Options opts)
         {
+            var validated = OptionsValidator.Validate(opts);
+
+            if (validated.IsJust())
+            {
+                return validated;
+            }
+
             if (opts.EnvFileSpecified)
                 LoadEnv(opts);
 
@@ -24,6 +31,8 @@ namespace Injector
             else if (opts.IsConnectionString)
                 injection.InjectConnectionString(opts.Name, value);
             else if (opts.IsWcfEndpoint) injection.InjectWcfEndpoint(opts.Name, value);
+
+            return Maybe.Nothing<ExitCode>();
         }
 
         private static void LoadEnv(Options opts)

@@ -1,5 +1,4 @@
 using System.IO;
-using Newtonsoft.Json.Linq;
 using Xunit;
 using static Injector.Tests.TestHelper;
 

@@ -1,20 +1,39 @@
 ﻿using System.Collections.Generic;
 using CommandLine;
+using CSharpx;
 
 namespace Injector
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(Runner.Run)
-                .WithNotParsed(HandleParseError);
+            return Parser.Default.ParseArguments<Options>(args)
+                .MapResult(
+                    parsedFunc: Runner.Run,
+                    notParsedFunc: HandleParseError)
+                .GetValueOrDefault(ExitCode.Nominal)
+                .Value;
         }
 
-        private static void HandleParseError(IEnumerable<Error> errs)
+        private static Maybe<ExitCode> HandleParseError(IEnumerable<Error> errs)
         {
+            return Maybe.Just(ExitCode.OptionsParsingError);
         }
+    }
+
+    public class ExitCode
+    {
+        public static ExitCode OptionsParsingError => new ExitCode(-1);
+        public static ExitCode Nominal => new ExitCode(0);
+        public static ExitCode JsonPathAndEnvVarAreMutuallyExclusive => new ExitCode(1);
+
+        private ExitCode(int value)
+        {
+            Value = value;
+        }
+
+        public int Value { get; }
     }
 
     public class Options
@@ -36,7 +55,6 @@ namespace Injector
 
         [Option(longName: "envFile", Required = false, HelpText = "Path to a \".env\" file (or other filename).")]
         public string EnvFile { get; set; }
-
 
         [Option(longName: "json_file", Required = false, HelpText = "Path to a JSON file for use in conjunction with '-j' or '--json_path'.")]
         public string JsonFile { get; set; }
