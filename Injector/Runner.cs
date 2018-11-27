@@ -2,6 +2,7 @@
 using System.IO;
 using dotenv.net;
 using Monad;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Injector
@@ -59,9 +60,13 @@ namespace Injector
 
         private static string GetJsonValue(string jsonPath, string jsonFile)
         {
-            var data = JObject.Parse(File.ReadAllText(jsonFile));
-            var token = data.SelectToken(jsonPath);
-            return token.ToString();
+            using (var file = File.OpenText(jsonFile))
+            using (var reader = new JsonTextReader(file))
+            {
+                var token = JToken.ReadFrom(reader);
+                var selected = token.SelectToken(jsonPath);
+                return selected.ToString();
+            }
         }
     }
 }
