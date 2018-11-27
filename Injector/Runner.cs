@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
-using CSharpx;
 using dotenv.net;
+using Monad;
 using Newtonsoft.Json.Linq;
 
 namespace Injector
 {
     public static class Runner
     {
-        public static Maybe<ExitCode> Run(Options opts)
+        public static Option<ExitCode> Run(Options opts)
         {
             var validated = OptionsValidator.Validate(opts);
 
-            if (validated.IsJust())
+            if (validated.HasValue())
             {
                 return validated;
             }
@@ -32,7 +32,7 @@ namespace Injector
                 injection.InjectConnectionString(opts.Name, value);
             else if (opts.IsWcfEndpoint) injection.InjectWcfEndpoint(opts.Name, value);
 
-            return Maybe.Nothing<ExitCode>();
+            return Option.Nothing<ExitCode>();
         }
 
         private static void LoadEnv(Options opts)

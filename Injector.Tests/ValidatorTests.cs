@@ -1,5 +1,5 @@
 using System.IO;
-using CSharpx;
+using Monad;
 using Xunit;
 
 namespace Injector.Tests
@@ -21,10 +21,8 @@ namespace Injector.Tests
 
             var result = OptionsValidator.Validate(opts);
 
-            Assert.True(result.IsJust());
-            result.Match(
-                ifJust: v => Assert.Equal(v.Value, ExitCode.JsonPathAndEnvVarAreMutuallyExclusive.Value),
-                ifNothing: () => Assert.True(false, "Bad case"));
+            Assert.True(result.HasValue());
+            Assert.Equal(result.Value().Value, ExitCode.JsonPathAndEnvVarAreMutuallyExclusive.Value);
         }
     }
 }

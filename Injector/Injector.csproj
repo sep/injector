@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.2.1" />
-    <PackageReference Include="dotenv.net" Version="1.0.3" />
+    <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="csharp-monad" Version="1.0.1" />
+    <PackageReference Include="dotenv.net" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +25,7 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
 
-    <Version>1.0.3</Version>
+    <Version>1.1.1</Version>
     <FileVersion>$(Version)</FileVersion>
     <Authors>Jon Fuller</Authors>
     <Description>Injects values into config files directly or via environment variables. Can inject app settings, connection strings, or WCF client endpoints.</Description>
@@ -33,8 +34,8 @@
     <PackageId>Injector</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>config appconfig inject environment env envvar 12factor twelvefactor docker db database connection-string connectionstring wcf endpoint</PackageTags>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/sep/injector/master/LICENSE</PackageLicenseUrl>
+    <PackageTags>config appconfig inject environment env envvar 12factor twelvefactor docker db database connection-string connectionstring wcf endpoint json jsonpath</PackageTags>
+    <PackageLicense>LICENSE</PackageLicense>
     <PackageProjectUrl>https://github.com/sep/injector</PackageProjectUrl>
     <PackageOutputPath>artifacts</PackageOutputPath>
   </PropertyGroup>

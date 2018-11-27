@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CommandLine;
-using CSharpx;
+using Monad;
 
 namespace Injector
 {
@@ -12,13 +12,15 @@ namespace Injector
                 .MapResult(
                     parsedFunc: Runner.Run,
                     notParsedFunc: HandleParseError)
-                .GetValueOrDefault(ExitCode.Nominal)
-                .Value;
+                .Match(
+                    Just: _ => _,
+                    Nothing: ExitCode.Nominal)
+                ().Value;
         }
 
-        private static Maybe<ExitCode> HandleParseError(IEnumerable<Error> errs)
+        private static Option<ExitCode> HandleParseError(IEnumerable<Error> errs)
         {
-            return Maybe.Just(ExitCode.OptionsParsingError);
+            return Option.Return(() => ExitCode.OptionsParsingError);
         }
     }
 
