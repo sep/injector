@@ -65,7 +65,7 @@ namespace Injector
             {
                 var token = JToken.ReadFrom(reader);
                 var selected = token.SelectToken(jsonPath);
-                return selected.ToString();
+                return (selected ?? jsonPath).ToString();
             }
         }
     }
