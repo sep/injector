@@ -15,7 +15,7 @@ namespace Injector.Tests
             {
                 var actualContent = WithContent(filename, originalContent.Trim(), () =>
                 {
-                    var injection = new Injection(filename);
+                    var injection = new Injection(filename, new StringWriter(), new StringWriter());
 
                     exercise(injection);
                 });

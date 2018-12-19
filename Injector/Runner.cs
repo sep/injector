@@ -25,7 +25,7 @@ namespace Injector
                 : opts.IsJsonPath ? GetJsonValue(opts.Value, opts.JsonFile)
                 : opts.Value;
 
-            var injection = new Injection(opts.ConfigFile);
+            var injection = new Injection(opts.ConfigFile, Console.Out, Console.Error);
 
             if (opts.IsAppSetting)
                 injection.InjectAppSetting(opts.Name, value);

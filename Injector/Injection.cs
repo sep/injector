@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Xml;
 
 namespace Injector
@@ -6,11 +6,16 @@ namespace Injector
     public class Injection
     {
         private readonly string _configFile;
+        private readonly TextWriter _out;
+        private readonly TextWriter _error;
 
-        public Injection(string configFile)
+        public Injection(string configFile, TextWriter @out, TextWriter error)
         {
             _configFile = configFile;
+            _out = @out;
+            _error = error;
         }
+
         public void InjectAppSetting(string settingKey, string value)
         {
             InjectValue(
@@ -34,7 +39,7 @@ namespace Injector
                 $"//configuration/connectionStrings/add[@name = '{connectionStringName}']/@connectionString",
                 connectionString);
         }
-        private static void InjectValue(string filename, string xpath, string value)
+        private void InjectValue(string filename, string xpath, string value)
         {
             var xml = new XmlDocument();
             xml.Load(filename);
@@ -42,7 +47,7 @@ namespace Injector
             var node = xml.SelectSingleNode(xpath);
             if (node == null)
             {
-                Console.Error.WriteLine($"Cannot find {xpath}.");
+                _error.WriteLine($"Cannot find {xpath}.");
                 return;
             }
 
@@ -50,7 +55,7 @@ namespace Injector
 
             xml.Save(filename);
 
-            Console.Out.WriteLine($"Injected {value} into {filename} at {xpath}.");
+            _out.WriteLine($"Injected {value} into {filename} at {xpath}.");
         }
     }
 }
