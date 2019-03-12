@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.3.0" />
     <PackageReference Include="csharp-monad" Version="1.0.1" />
     <PackageReference Include="dotenv.net" Version="1.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +26,7 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
 
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
     <FileVersion>$(Version)</FileVersion>
     <Authors>Jon Fuller</Authors>
     <Description>Injects values into config files directly or via environment variables. Can inject app settings, connection strings, or WCF client endpoints.</Description>
