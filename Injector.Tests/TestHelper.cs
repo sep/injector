@@ -7,7 +7,7 @@ namespace Injector.Tests
 {
     public static class TestHelper
     {
-        public static void TestInjection(string originalContent, string expectedContent, Action<Injection> exercise)
+        public static void TestAppSettingsJsonInjection(string originalContent, string expectedContent, Action<AppSettingsJsonInjection> exercise)
         {
             var filename = Path.GetTempFileName();
 
@@ -15,7 +15,23 @@ namespace Injector.Tests
             {
                 var actualContent = WithContent(filename, originalContent.Trim(), () =>
                 {
-                    var injection = new Injection(filename, new StringWriter(), new StringWriter());
+                    var injection = new AppSettingsJsonInjection(filename, new StringWriter(), new StringWriter());
+
+                    exercise(injection);
+                });
+
+                Assert.Equal(expectedContent.Trim(), actualContent.Trim());
+            }
+        }
+        public static void TestAppConfigInjection(string originalContent, string expectedContent, Action<AppConfigInjection> exercise)
+        {
+            var filename = Path.GetTempFileName();
+
+            using (WithFile(filename))
+            {
+                var actualContent = WithContent(filename, originalContent.Trim(), () =>
+                {
+                    var injection = new AppConfigInjection(filename, new StringWriter(), new StringWriter());
 
                     exercise(injection);
                 });

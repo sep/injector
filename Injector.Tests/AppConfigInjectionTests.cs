@@ -3,7 +3,7 @@ using static Injector.Tests.TestHelper;
 
 namespace Injector.Tests
 {
-    public class InjectionTests
+    public class AppConfigInjectionTests
     {
         [Fact]
         public void InjectsAppSetting()
@@ -26,7 +26,7 @@ namespace Injector.Tests
 </configuration>
 ";
 
-            TestInjection(original, expected,
+            TestAppConfigInjection(original, expected,
                 injection => injection.InjectAppSetting("TestKey", "new value"));
         }
 
@@ -51,7 +51,7 @@ namespace Injector.Tests
 </configuration>
 ";
 
-            TestInjection(original, expected,
+            TestAppConfigInjection(original, expected,
                 injection => injection.InjectConnectionString("DatabaseConnection", "new connection string"));
         }
 
@@ -80,7 +80,7 @@ namespace Injector.Tests
 </configuration>
 ";
 
-            TestInjection(original, expected,
+            TestAppConfigInjection(original, expected,
                 injection => injection.InjectWcfEndpoint("ServiceName", "new endpoint address"));
         }
     }

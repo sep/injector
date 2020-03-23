@@ -3,13 +3,13 @@ using System.Xml;
 
 namespace Injector
 {
-    public class Injection
+    public class AppConfigInjection : IInjection
     {
         private readonly string _configFile;
         private readonly TextWriter _out;
         private readonly TextWriter _error;
 
-        public Injection(string configFile, TextWriter @out, TextWriter error)
+        public AppConfigInjection(string configFile, TextWriter @out, TextWriter error)
         {
             _configFile = configFile;
             _out = @out;
@@ -39,6 +39,7 @@ namespace Injector
                 $"//configuration/connectionStrings/add[@name = '{connectionStringName}']/@connectionString",
                 connectionString);
         }
+
         private void InjectValue(string filename, string xpath, string value)
         {
             var xml = new XmlDocument();
